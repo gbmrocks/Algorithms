@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="GitCommitMessageComponent">
+		<list key="D:\Workspace\Interview\.git">
+			<item value="false"/>
+			<item value="Pradyumna &lt;neog.pradyumna@gmail.com&gt;"/>
+			<item value="Initial Commit"/>
+			<item value="Pradyumna &lt;neog.pradyumna@gmail.com&gt;"/>
+			<item value="0000000000000000000000000000000000000000"/>
+		</list>
+	</section>
+	<section name="org.eclipse.egit.ui.internal.staging.StagingView">
+		<item value="200,200" key="STAGING_SASH_FORM_WEIGHT"/>
+		<item value="true" key="sortItemState"/>
+		<item value="200,200" key="HORIZONTAL_SASH_FORM_WEIGHT"/>
+	</section>
+</section>

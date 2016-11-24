@@ -1,0 +1,272 @@
+package com.prady.algorithms.strings;
+
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class ParseTreeOp {
+	/*public static void main(String[] args) {
+		String input = "(AB)C((DE)F) /SRRSRRS";
+		String regexS = "S{1,}";
+		String regexR = "RR";
+
+		Pattern patternS	= Pattern.compile(regexS);
+		Matcher mat = patternS.matcher(input);
+		if(mat.find())
+			input = mat.replaceAll("S");
+		Pattern patterR	= Pattern.compile(regexR);
+		mat = patterR.matcher(input);
+		if(mat.find())
+			input = mat.replaceAll("");
+
+		String[] arr = input.split("/");
+
+		char[] charArr = arr[1].toCharArray();
+		for(int i=0; i<charArr.length; i++){
+			switch (charArr[i]){
+			case 'S':
+				break;
+			case 'R':
+				break;
+			}
+		}
+//		StringBuffer buffer = new StringBuffer(input);
+//		String modified = buffer.reverse().toString();
+//		modified = modified.replaceAll("\\(", "\\:");
+//		modified = modified.replaceAll("\\)", "\\(");
+//		modified = modified.replaceAll("\\:", "\\)");
+		System.out.println(input);
+//		System.out.println(modified);
+	}*/
+
+	public static void main(String args[] ) throws Exception {
+
+		/*String expr = "C(AB)((DE)F)";
+//		String[] split = expr.split("\\(");
+		expr 	= simplify(expr);
+		System.out.println(expr);*/
+		//		root = constructTree(expr, 0, false);
+		Scanner sc      = new Scanner(System.in);
+		while(sc.hasNextLine()){
+			String input    = sc.nextLine();
+			String regexS   = "S{1,}";
+			String regexR   = "RR";
+
+			//Simplifying the commands by removing redundant commands
+			Pattern pattern = Pattern.compile(regexR);
+			Matcher mat     = pattern.matcher(input);
+			if(mat.find())
+				input = mat.replaceAll("");
+
+			pattern         = Pattern.compile(regexS);
+			mat             = pattern.matcher(input);
+			if(mat.find())
+				input       = mat.replaceAll("S");
+
+
+			String[] inputArr = input.split("/");
+			if(inputArr.length == 1){
+				System.out.println(inputArr[0]);
+				break;
+			}
+			String text     = inputArr[0];
+			text = text.replaceAll(" ", "");
+			char[] command  = inputArr[1].toCharArray();
+			for(int i=0; i<command.length; i++){
+				switch (command[i]){
+				case 'S':
+					text = simplify(text);
+					break;
+				case 'R':
+					text = reverse(text);
+					break;
+				default:
+					System.out.println("Invalid Operation");
+					break;
+				}
+			}
+
+			System.out.println(text.replaceAll(" ", "")); 
+		}
+		sc.close();
+
+		 
+	}
+
+	/*static class Node{
+		String data;
+		Node leftChild;
+		Node rightChild;
+
+		public Node(String data){
+			this.data = data;
+		}
+
+		public void setLeftChild(String data){
+			this.leftChild = new Node(data);
+		}
+
+		public void setRightChild(String data){
+			this.rightChild = new Node(data);
+		}
+
+		public Node getLeftChild(){
+			return leftChild;
+		}
+
+		public Node getRightChild(){
+			return rightChild;
+		}
+	}*/
+	
+	
+	/*public static Node constructTree(String expr, int index, boolean isOperator){
+		Node node = null;
+		while(index < expr.length()){
+			if(index > expr.length() || expr.charAt(index)==')')
+				return null;
+			if(expr.charAt(index)=='(')
+				node = constructTree(expr, index+1, true);
+			else if(!isOperator){
+				return new Node(String.valueOf(expr.charAt(index)));
+			}else{
+				node = new Node(String.valueOf(expr.charAt(index)));
+				node.leftChild = constructTree(expr, index++, false);
+				node.rightChild = constructTree(expr, index++, false);
+				index++;
+			}
+		}
+		return node;
+	}*/
+	
+	public static String simplify(String input){
+		Stack<Character> st = new Stack<Character>();
+		Stack<Character> brckSt = new Stack<>();
+//			char[] res;
+		char[] inputArr = input.toCharArray();
+		boolean flag = true;
+//		boolean firstExpr = true;
+		StringBuffer buffer = new StringBuffer();
+		for(int i=0; i<inputArr.length; i++){
+			if(inputArr[i]=='('){
+				if(flag){
+					brckSt.push(inputArr[i]);
+				}else{
+					buffer.append(inputArr[i]);
+					flag=true;
+				}
+			}else if(inputArr[i]==')'){
+				if(!brckSt.isEmpty()){
+					brckSt.pop();
+				}else{
+					buffer.append(inputArr[i]);
+				}
+			}else{
+				if(flag)
+					flag = false;
+				buffer.append(inputArr[i]);
+			}
+		}
+		
+		
+		
+		/*Pattern pat = Pattern.compile("\\(\\D");
+		Matcher mat = pat.matcher(input);
+		while(mat.find()){
+			mat.
+		}*/
+		/*for(int i=0; i<inputArr.length; i++){
+			if(i==0 && inputArr[i]=='('){
+				inputArr[i]=' ';
+				flag = true;
+			}else if(inputArr[i]=='(' && inputArr[i]== inputArr[i-1]){
+				inputArr[i]=' ';
+				flag = true;
+			}else if(flag && inputArr[i]==')'){
+				inputArr[i] = ' ';
+				flag = false;
+			}
+		}*/
+		
+		/*for(int i=0; i<inputArr.length; i++){
+			char currentChar = inputArr[i];
+			if(currentChar=='('){
+				if(i==0){
+					brckSt.push(currentChar);
+					firstExpr = true;
+				}else if(!st.isEmpty() && st.peek() == currentChar){
+					brckSt.push(currentChar);
+				}else{
+					st.push(currentChar);
+				}
+			}else if(currentChar==')'){
+				if(firstExpr && !brckSt.isEmpty()){
+					brckSt.pop();
+					if(brckSt.isEmpty())
+						firstExpr = false;
+				}else if(!brckSt.isEmpty() && brckSt.peek()=='(')
+					brckSt.pop();
+				else
+					st.push(currentChar);
+			}else{
+				st.push(currentChar);
+			}
+		}*/
+		
+		/*for(int i=0; i<inputArr.length; i++){
+			if(firstExpr && inputArr[i]=='('){
+				brckSt.push('(');
+			}else if(inputArr[i]==')' && firstExpr && !brckSt.isEmpty()){
+				brckSt.pop();
+				if(brckSt.isEmpty())
+					firstExpr = false;
+			}else if(inputArr[i]==')'){
+				
+			}else{
+				st.push(inputArr[i]);
+			}
+			*/
+			
+			/*else if(inputArr[i] == ')' && !brckSt.isEmpty() && brckSt.){
+				
+			}else if(inputArr[i]=='(' && !st.isEmpty() && st.peek()=='('){
+				continue;
+			}else{
+				st.push(inputArr[i]);
+			}*/
+//		}
+		
+		/*for(int i=0; i<inputArr.length; i++){
+			if(inputArr[i]=='(' && 	i==0){
+				flag = true;
+			}else if(){
+				
+			}else if(inputArr[i] == '(' && !st.isEmpty() && st.peek()=='('){
+				flag = true;
+			}else if(inputArr[i]==')' && flag){
+				flag = false;
+			}else{
+				st.push(inputArr[i]);
+			}
+		}*/
+		/*res = new char[st.size()];
+		int i=st.size()-1;
+		while(!st.isEmpty() && i>=0){
+			res[i] = st.pop();
+			i--;
+		}*/
+//		if(inputArr.length > res.length)
+//			res = simplify(new String(res)).toCharArray();
+		String result = buffer.toString().replaceAll(" ", "");
+		return result;
+	}
+	
+	public static String reverse(String input){
+		StringBuffer buffer = new StringBuffer(input);
+		String modified     = buffer.reverse().toString();
+		modified    = modified.replaceAll("\\(", "\\:");
+		modified    = modified.replaceAll("\\)", "\\(");
+		modified    = modified.replaceAll("\\:", "\\)");
+		return modified;
+	}
+}
